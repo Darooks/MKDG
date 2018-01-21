@@ -5,15 +5,20 @@ from django.core.files.storage import FileSystemStorage
 from uploads.core.models import Document
 from uploads.core.forms import DocumentForm
 
+import os
+
 
 def home(request):
     documents = Document.objects.all()
-    return render(request, 'core/home.html', { 'documents': documents })
+    return render(request, 'core/simple_upload.html', { 'documents': documents })
 
 
 def simple_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
+        if os.path.isfile(os.path.join(settings.MEDIA_ROOT, 'image.jpg')):
+            os.remove(os.path.join(settings.MEDIA_ROOT, 'image.jpg'))
         myfile = request.FILES['myfile']
+        myfile.name = "image.jpg"
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)

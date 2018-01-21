@@ -1,16 +1,20 @@
 from django.core.files.storage import FileSystemStorage
 
+from skimage.morphology import skeletonize
 from skimage.color.adapt_rgb import adapt_rgb, each_channel, hsv_value
 from skimage.exposure import rescale_intensity
-from skimage import filters
+from skimage import filters, data, img_as_bool, io, color, morphology
 from PIL import Image
-from numpy import*
+from numpy import *
+import numpy as np
 from django.conf import settings
 import os
-import PIL
 import scipy.misc
-
+from skimage.util import invert
 import matplotlib.pyplot as plt
+
+
+IMAGE_URL = "/media/image_transformed.jpg"
 
 @adapt_rgb(each_channel)
 def sobel_each(image):
@@ -24,4 +28,15 @@ def sobel(myfile):
     file_url = os.path.join(settings.MEDIA_ROOT) + "/image_transformed.jpg"
     scipy.misc.imsave(file_url, new_image_arr)
 
-    return "/media/image_transformed.jpg"
+    return IMAGE_URL
+
+
+def skeletonize(myfile):
+    img = img_as_bool(color.rgb2gray(io.imread(myfile)))
+    img = morphology.skeletonize(img)
+
+    file_url = os.path.join(settings.MEDIA_ROOT) + "/image_transformed.jpg"
+    # img = np.array(img).reshape(50, 50)
+    scipy.misc.imsave(file_url, img)
+
+    return IMAGE_URL

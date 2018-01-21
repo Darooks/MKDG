@@ -8,7 +8,7 @@ from uploads.core.forms import DocumentForm
 from imagekit import ImageSpec
 from imagekit.processors import ResizeToFill
 
-from uploads.core.sobelTransformation import sobel
+from uploads.core.sobelTransformation import sobel, skeletonize
 
 import os
 
@@ -40,6 +40,17 @@ def simple_upload(request):
         if os.path.isfile(os.path.join(settings.MEDIA_ROOT, 'image.jpg')):
             myfile = os.path.join(settings.MEDIA_ROOT, 'image.jpg')
             transformed_file_url = sobel(myfile)
+
+            uploaded_file_url = "/media/image.jpg"
+
+            return render(request, 'core/simple_upload.html', {
+                'uploaded_file_url': uploaded_file_url,
+                'transformed_file_url': transformed_file_url,
+            })
+    elif request.method == 'POST' and 'skeleton_trans' in request.POST:
+        if os.path.isfile(os.path.join(settings.MEDIA_ROOT, 'image.jpg')):
+            myfile = os.path.join(settings.MEDIA_ROOT, 'image.jpg')
+            transformed_file_url = skeletonize(myfile)
 
             uploaded_file_url = "/media/image.jpg"
 

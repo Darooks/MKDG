@@ -16,10 +16,9 @@ def sobel(myfile):
     myfile.name = "image.jpg"
     fs = FileSystemStorage()
     filename = fs.save(myfile.name, myfile)
-    temp = asarray(Image.open('media/' + myfile.name))
-    image = temp
-    fig = plt.figure(figsize=(14, 7))
-    ax_each = fig.add_subplot(121, adjustable='box-forced')
+    image = asarray(Image.open('media/' + myfile.name))
+    fig = plt.figure(figsize=(14, 9))
+    ax_each = fig.add_subplot(111)
     ax_each.imshow(rescale_intensity(1 - sobel_each(image)))
     ax_each.set_xticks([]), ax_each.set_yticks([])
     ax_each.set_title("Sobel filter computed\n on individual RGB channels")

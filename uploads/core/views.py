@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 
 from uploads.core.models import Document
 from uploads.core.forms import DocumentForm
@@ -8,9 +7,6 @@ from uploads.core.forms import DocumentForm
 from imagekit import ImageSpec
 from imagekit.processors import ResizeToFill
 
-from skimage.color import rgb2gray
-from skimage.color.adapt_rgb import adapt_rgb, each_channel, hsv_value
-from skimage import filters
 from uploads.core.sobelTransformation import sobel
 
 import os
@@ -19,14 +15,6 @@ class Thumbnail(ImageSpec):
     processors = [ResizeToFill(800, 600)]
     format = 'JPEG'
     options = {'quality': 100}
-
-def as_gray(image_filter, image, *args, **kwargs):
-    gray_image = rgb2gray(image)
-    return image_filter(gray_image, *args, **kwargs)
-
-@adapt_rgb(as_gray)
-def sobel_gray(image):
-    return filters.sobel(image)
 
 def home(request):
     documents = Document.objects.all()

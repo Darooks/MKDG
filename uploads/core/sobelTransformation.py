@@ -5,6 +5,10 @@ from skimage.exposure import rescale_intensity
 from skimage import filters
 from PIL import Image
 from numpy import*
+from django.conf import settings
+import os
+import PIL
+import scipy.misc
 
 import matplotlib.pyplot as plt
 
@@ -12,17 +16,12 @@ import matplotlib.pyplot as plt
 def sobel_each(image):
     return filters.sobel(image)
 
+
 def sobel(myfile):
-    myfile.name = "image.jpg"
-    fs = FileSystemStorage()
-    filename = fs.save(myfile.name, myfile)
-    image = asarray(Image.open('media/' + myfile.name))
-    fig = plt.figure(figsize=(14, 9))
-    ax_each = fig.add_subplot(111)
-    ax_each.imshow(rescale_intensity(1 - sobel_each(image)))
-    ax_each.set_xticks([]), ax_each.set_yticks([])
-    ax_each.set_title("Sobel filter computed\n on individual RGB channels")
+    image = asarray(Image.open(myfile))
 
-    plt.savefig('media/' + myfile.name)
+    new_image_arr = rescale_intensity(1 - sobel_each(image))
+    file_url = os.path.join(settings.MEDIA_ROOT) + "/image_transformed.jpg"
+    scipy.misc.imsave(file_url, new_image_arr)
 
-    return fs.url(filename)
+    return "/media/image_transformed.jpg"

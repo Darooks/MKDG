@@ -7,12 +7,20 @@
     {% csrf_token %}
     <input type="file" name="myfile">
     <button type="submit">Upload</button>
+    <input type="submit" name="sobel_trans" value="Sobel">
   </form>
 
   <div id="original_image">
     {% if uploaded_file_url %}
       <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
       <img src="{{ uploaded_file_url }}">
+    {% endif %}
+  </div>
+
+  <div id="transformed_image">
+    {% if transformed_file_url %}
+      <p>File transformed at: <a href="{{ transformed_file_url }}">{{ transformed_file_url }}</a></p>
+      <img src="{{ transformed_file_url }}">
     {% endif %}
   </div>
 

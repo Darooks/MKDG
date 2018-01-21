@@ -69,6 +69,17 @@ def simple_upload(request):
                 'uploaded_file_url': uploaded_file_url,
                 'transformed_file_url': transformed_file_url,
             })
+    elif request.method == 'POST' and 'canny_trans' in request.POST:
+        if os.path.isfile(os.path.join(settings.MEDIA_ROOT, 'image.jpg')):
+            myfile = os.path.join(settings.MEDIA_ROOT, 'image.jpg')
+            transformed_file_url = canny(myfile)
+
+            uploaded_file_url = "/media/image.jpg"
+
+            return render(request, 'core/simple_upload.html', {
+                'uploaded_file_url': uploaded_file_url,
+                'transformed_file_url': transformed_file_url,
+            })
 
     return render(request, 'core/simple_upload.html')
 

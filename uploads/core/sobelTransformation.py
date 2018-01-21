@@ -3,7 +3,7 @@ from django.core.files.storage import FileSystemStorage
 from skimage.morphology import skeletonize
 from skimage.color.adapt_rgb import adapt_rgb, each_channel, hsv_value
 from skimage.exposure import rescale_intensity
-from skimage import filters, data, img_as_bool, io, color, morphology
+from skimage import filters, img_as_float, img_as_bool, io, color, morphology, data, exposure
 from PIL import Image
 from numpy import *
 import numpy as np
@@ -36,7 +36,16 @@ def skeletonize(myfile):
     img = morphology.skeletonize(img)
 
     file_url = os.path.join(settings.MEDIA_ROOT) + "/image_transformed.jpg"
-    # img = np.array(img).reshape(50, 50)
+    scipy.misc.imsave(file_url, img)
+
+    return IMAGE_URL
+
+def contrast_log(myfile):
+    img = color.rgb2gray(io.imread(myfile))
+    # img = img_as_float(img)
+    img = exposure.adjust_log(img, 1)
+
+    file_url = os.path.join(settings.MEDIA_ROOT) + "/image_transformed.jpg"
     scipy.misc.imsave(file_url, img)
 
     return IMAGE_URL

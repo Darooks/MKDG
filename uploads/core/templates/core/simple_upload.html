@@ -7,8 +7,10 @@
     {% csrf_token %}
     <input type="file" name="myfile">
     <button type="submit">Upload</button>
+    <br/>
     <input type="submit" name="sobel_trans" value="Sobel">
-   <input type="submit" name="skeleton_trans" value="Skeletonize">
+    <input type="submit" name="skeleton_trans" value="Skeletonize">
+    <input type="submit" name="contrast_trans" value="Contrast">
   </form>
 
   <div id="original_image">

@@ -53,9 +53,7 @@ def contrast_log(myfile):
 
 def canny(myfile):
     img = color.rgb2gray(io.imread(myfile))
-    edges1 = feature.canny(img, sigma=2)
-    img_flote = img_as_float(edges1)
+    edges = img_as_float(feature.canny(img, sigma=2))
     file_url = os.path.join(settings.MEDIA_ROOT, 'image_transformed.jpg')
-    plt.savefig(file_url)
-    scipy.misc.imsave(file_url, img_flote)
+    scipy.misc.imsave(file_url, edges)
     return IMAGE_URL
